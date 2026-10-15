@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">手势控屏</string>
+
+    <string name="accessibility_description">使用摄像头识别手势来操作手机，包括返回、回到桌面、打开最近任务，以及移动光标和点击屏幕。本服务仅在你主动开启手势控屏后运行。</string>
+    <string name="accessibility_summary">摄像头手势操作手机</string>
+
+    <string name="status_idle">未运行</string>
+    <string name="status_running">识别中…</string>
+    <string name="btn_start">开启手势控屏</string>
+    <string name="btn_stop">停止</string>
+
+    <string name="step_camera">① 摄像头权限</string>
+    <string name="step_overlay">② 悬浮窗权限</string>
+    <string name="step_accessibility">③ 无障碍服务</string>
+    <string name="granted">已授权</string>
+    <string name="not_granted">去开启</string>
+
+    <string name="channel_name">手势控屏运行通知</string>
+    <string name="channel_desc">手势识别正在后台运行</string>
+    <string name="notification_text">摄像头手势识别运行中，点击停止</string>
+
+    <string name="toast_need_camera">请先授予摄像头权限</string>
+    <string name="toast_need_overlay">请先授予悬浮窗权限</string>
+    <string name="toast_need_accessibility">请在系统无障碍设置中开启「手势控屏」</string>
+    <string name="toast_model_missing">缺少模型文件 hand_landmarker.task</string>
+
+    <string name="gesture_guide_title">手势对照表</string>
+    <string name="gesture_guide">
+        ✊ 握拳 → 返回\n
+        ✋ 张开手掌 → 回到桌面\n
+        ✌️ 剪刀手 → 最近任务\n
+        👍 点赞 → 向上滚动\n
+        👎 点踩 → 向下滚动\n
+        ☝️ 食指伸出 → 移动光标\n
+        🤏 拇指与食指捏合 → 点击当前位置
+    </string>
+</resources>
