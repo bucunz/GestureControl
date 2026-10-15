@@ -18,7 +18,6 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.core.toBitmap
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
@@ -99,7 +98,7 @@ class CameraGestureService : LifecycleService() {
     private fun analyze(proxy: ImageProxy) {
         try {
             val rotation = proxy.imageInfo.rotationDegrees
-            val src = proxy.toBitmap()
+            val src = rgbaToBitmap(proxy)
             val corrected = transform(src, rotation, Prefs.useFrontCamera)
             if (src !== corrected) src.recycle()
             recognizer.recognize(corrected, SystemClock.uptimeMillis())
@@ -107,6 +106,25 @@ class CameraGestureService : LifecycleService() {
             Log.w(TAG, "分析帧失败: ${e.message}")
         } finally {
             proxy.close()
+        }
+    }
+
+    /** ImageProxy(RGBA_8888) → Bitmap，不依赖 CameraX 的 Kotlin 扩展 */
+    private fun rgbaToBitmap(proxy: ImageProxy): Bitmap {
+        val plane = proxy.planes[0]
+        val buffer = plane.buffer
+        val pixelStride = plane.pixelStride
+        val rowStride = plane.rowStride
+        val rowPadding = rowStride - pixelStride * proxy.width
+        val paddedWidth = proxy.width + rowPadding / pixelStride
+        val tmp = Bitmap.createBitmap(paddedWidth, proxy.height, Bitmap.Config.ARGB_8888)
+        tmp.copyPixelsFromBuffer(buffer)
+        return if (paddedWidth == proxy.width) {
+            tmp
+        } else {
+            val out = Bitmap.createBitmap(tmp, 0, 0, proxy.width, proxy.height)
+            tmp.recycle()
+            out
         }
     }
 
